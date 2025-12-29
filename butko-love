@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Butko 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {box-sizing:border-box;margin:0;padding:0;}
+body {
+    min-height:100vh;
+    font-family:Georgia, serif;
+    display:flex; justify-content:center; align-items:center;
+    padding:20px;
+    background: linear-gradient(135deg,#0f0f0f,#1a1a1a);
+    color:#fff;
+}
+.card {
+    background:#fff;
+    color:#111;
+    border-radius:18px;
+    padding:30px 25px;
+    max-width:420px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 25px 45px rgba(0,0,0,0.3);
+    animation: fadeIn 1.2s ease;
+    position:relative;
+}
+h1{font-size:26px;margin-bottom:15px;}
+p{font-size:17px;line-height:1.6;margin-bottom:20px;min-height:80px;}
+input{padding:12px;width:100%;border-radius:10px;border:1px solid #ccc;margin-bottom:10px;}
+button{
+    width:100%;padding:14px;margin-top:10px;
+    font-size:16px;border-radius:30px;border:none;
+    cursor:pointer;
+}
+.primary{background:#000;color:#fff;}
+.danger{background:#ff4d4d;color:#fff;}
+.success{background:#28a745;color:#fff;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.heart{
+    position:absolute;
+    font-size:24px;
+    animation:floatUp 2s linear forwards;
+}
+@keyframes floatUp{
+    0%{opacity:1;transform:translateY(0) scale(1);}
+    100%{opacity:0;transform:translateY(-150px) scale(2);}
+}
+</style>
+</head>
+
+<body>
+<div class="card" id="card">
+    <h1 id="title">Hey Butko 👀</h1>
+    <p id="text">Ye page sirf aapke liye hai… par thora sabr chahiye 😌</p>
+
+    <input type="password" id="pass" placeholder="Secret word 💌">
+    <button class="primary" id="unlockBtn">Unlock ❤️</button>
+
+    <div id="teaseChoices" style="display:none;">
+        <p id="question">Ek baat sach sach bataiye…</p>
+        <button class="primary" id="yesBtn">Haan 😍</button>
+        <button class="danger" id="noBtn">Nahi 🙈</button>
+    </div>
+
+    <button id="screenshotBtn" style="display:none;" class="primary">📸 Save Memory</button>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+<script>
+const passInput = document.getElementById("pass");
+const unlockBtn = document.getElementById("unlockBtn");
+const teaseChoices = document.getElementById("teaseChoices");
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const question = document.getElementById("question");
+const text = document.getElementById("text");
+const title = document.getElementById("title");
+const bgMusic = document.getElementById("bgMusic");
+const card = document.getElementById("card");
+const screenshotBtn = document.getElementById("screenshotBtn");
+
+const PASSWORDS = ["butko","jaan","baby"]; 
+
+unlockBtn.onclick = () => {
+    const val = passInput.value.toLowerCase();
+    if(PASSWORDS.includes(val)){
+        passInput.style.display="none";
+        unlockBtn.style.display="none";
+        teaseChoices.style.display="block";
+        text.innerText = "Achha Butko… ab thoda mazaak shuru karte hain 😏";
+        bgMusic.play();
+    } else {
+        text.innerText="Oops… lagta hai galat password 😌";
+    }
+};
+
+// No button teasing
+noBtn.addEventListener("mouseover", () => {
+    const x = Math.random()*140-70;
+    const y = Math.random()*140-70;
+    noBtn.style.transform = `translate(${x}px,${y}px)`;
+});
+
+// Yes button click
+yesBtn.onclick = () => {
+    teaseChoices.style.display="none";
+    startTease();
+};
+
+// Teasing messages
+const teases = [
+    "Butko, itni cute ho ke website bhi sharma rahi hai 😳",
+    "Warning ⚠️ Butko ka smile dil chura sakta hai",
+    "Scroll slow kijiye Butko… dil phisal raha hai 💘",
+    "Agar muskura rahe hain, haan mujhe pata hai 😏"
+];
+
+function startTease(){
+    let i=0;
+    function next(){
+        if(i<teases.length){
+            text.innerText = teases[i];
+            i++;
+            setTimeout(next,1800);
+        } else {
+            showProposal();
+        }
+    }
+    next();
+}
+
+// Typing effect for proposal
+const proposalMessage = `Butko… aap meri har khushi ka reason hain ❤️
+Meri zindagi ki sabse pyari musibat hain…
+Aur main chahata hoon hamesha aapke saath rahoon 💍
+Kya aap mujhse shaadi karengi?`;
+
+function typeWriter(msg, el, speed=40, callback){
+    let idx=0;
+    el.innerText="";
+    function type(){
+        if(idx<msg.length){
+            el.innerText += msg.charAt(idx);
+            idx++;
+            setTimeout(type,speed);
+        } else {
+            if(callback) callback();
+        }
+    }
+    type();
+}
+
+// Create floating hearts
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.className="heart";
+    heart.innerText="❤️";
+    heart.style.left = Math.random()*card.offsetWidth + "px";
+    card.appendChild(heart);
+    setTimeout(()=>card.removeChild(heart),2000);
+}
+
+// Show proposal with Yes/No buttons
+function showProposal(){
+    title.innerText="Proposal Time 💖";
+    typeWriter(proposalMessage, text, 50, () => {
+        const yesBtn = document.createElement("button");
+        yesBtn.className="success";
+        yesBtn.innerText="Yes 😍";
+        yesBtn.onclick = () => {
+            alert("Yay! ❤️ Butko said Yes! 💍");
+            screenshotBtn.style.display="block";
+            // Hearts raining
+            const heartInterval = setInterval(createHeart, 200);
+            setTimeout(()=>clearInterval(heartInterval),3000);
+        };
+        
+        const noBtn = document.createElement("button");
+        noBtn.className="danger";
+        noBtn.innerText="No 🙈";
+        noBtn.onclick = () => alert("Oh no… Butko, try again 😌");
+
+        card.appendChild(yesBtn);
+        card.appendChild(noBtn);
+    });
+}
+
+// Screenshot feature
+screenshotBtn.onclick = () => {
+    html2canvas(card).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "butko_memory.png";
+        link.href = canvas.toDataURL();
+        link.click();
+    });
+};
+</script>
+</body>
+</html>
